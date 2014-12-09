@@ -1,0 +1,85 @@
+import de.ilu.movingletters.*;
+
+int snowParticles = 200;
+
+float[] ParticleWidth = new float[snowParticles];
+float[] ParticleX = new float[snowParticles];
+float[] ParticleY = new float[snowParticles];
+float[] ParticleSpeed = new float[snowParticles];
+color[] ParticleColor = new color[snowParticles];
+
+MovingLetters letters;
+
+void setup() {
+  size(800,600);
+  background(70,70,255);
+  letters = new MovingLetters(this, 40);
+  
+  setupParticles();
+}
+
+void draw() {
+  background(0,0,255);
+  drawLevel();
+  drawParticles();
+}
+
+void setupParticles() {
+ for(int i = 0; i < snowParticles; i++) {
+    ParticleWidth[i] = random(2, 5);
+    ParticleX[i] = random(-100, width);
+    ParticleY[i] = random(0, 500);
+    ParticleColor[i] = color(random(230,255),random(240,255),random(240,255));
+    ParticleSpeed[i] = random(3,5);
+  } 
+}
+
+void drawParticles() { 
+  
+ for(int i = 0; i < snowParticles; i++) {
+    fill(ParticleColor[i]);
+    ellipse(ParticleX[i], ParticleY[i], ParticleWidth[i], ParticleWidth[i]);
+    fill(255);
+    ParticleY[i] += ParticleSpeed[i];
+    ParticleX[i] += ParticleSpeed[i] /2;
+    
+    if(ParticleY[i] >= height + ParticleWidth[i]) {
+        ParticleY[i] = 0 + ParticleWidth[i];
+        ParticleWidth[i] = random(2, 5);
+        ParticleX[i] = random(-200, width);
+        ParticleColor[i] = color(random(230,255),random(240,255),random(240,255));
+        ParticleSpeed[i] = random(3,5);
+    }
+  }
+}
+
+void drawLevel() {
+  letters.text("Happy Christmas", width/2 - 195, 50, 2, 5);
+  
+  drawGround();
+  drawTree(580,249);
+  drawTree(220, 230);
+}
+
+void drawGround() {
+  smooth();
+  fill(232,250,248);
+  ellipse(200, 500, 900, 300);
+  ellipse(600, 550, 900, 300);
+  fill(255,255,255);
+  ellipse(250, 650, 600, 300);
+  ellipse(590, 600, 670, 160);
+}
+
+void drawTree(int PosX, int PosY) {
+  smooth();
+  fill(20,255,20);
+  stroke(55,255,40);
+  triangle(PosX - 40, PosY + 40, PosX, PosY - 60, PosX + 40, PosY + 40);
+  triangle(PosX - 50, PosY + 100, PosX, PosY - 40, PosX + 50, PosY + 100);
+  triangle(PosX - 60, PosY + 160, PosX, PosY - 20, PosX + 60, PosY + 160);
+  triangle(PosX - 70, PosY + 220, PosX, PosY + 40, PosX + 70, PosY + 220);
+  fill(110,97,9);
+  stroke(110,97,9);
+  rect(PosX - 15, PosY + 221, 30, 50);
+}
